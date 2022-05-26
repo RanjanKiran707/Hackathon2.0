@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo/colors.dart';
 import 'package:todo/controllers/signup_controller.dart';
 import 'package:todo/fonts.dart';
+import 'package:todo/utils/loadingButton.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -24,108 +26,23 @@ class SignUpPage extends StatelessWidget {
             30.heightBox,
             Column(
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Icon(
-                      Icons.alternate_email,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    15.widthBox,
-                    Expanded(
-                      child: TextField(
-                        controller: ctrl.emailCtrl,
-                        cursorColor: Colors.white,
-                        style: subHeading2,
-                        decoration: InputDecoration(
-                          hintText: "Email ID",
-                          hintStyle: subHeading2,
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomTextField(ctrl: ctrl.emailCtrl, name: "Email", icon: Icons.email),
                 16.heightBox,
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    14.widthBox,
-                    Expanded(
-                      child: TextField(
-                        controller: ctrl.passCtrl,
-                        obscureText: true,
-                        style: subHeading2,
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: subHeading2,
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomTextField(ctrl: ctrl.passCtrl, name: "Password", icon: Icons.lock),
                 16.heightBox,
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    14.widthBox,
-                    Expanded(
-                      child: TextField(
-                        controller: ctrl.nameCtrl,
-                        obscureText: true,
-                        style: subHeading2,
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          hintText: "Name",
-                          hintStyle: subHeading2,
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomTextField(ctrl: ctrl.nameCtrl, name: "Name", icon: Icons.person),
                 16.heightBox,
+                CustomTextField(ctrl: ctrl.ageCtrl, name: "Age", icon: Icons.numbers),
+                20.heightBox,
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    14.widthBox,
                     Expanded(
-                      child: TextField(
-                        controller: ctrl.ageCtrl,
-                        obscureText: true,
-                        style: subHeading2,
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          hintText: "Age",
-                          hintStyle: subHeading2,
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
+                      child: LoadingButton(
+                        color: secondary,
+                        fontSize: 16,
+                        onPressed: ctrl.signUp,
+                        text: "Sign Up",
                       ),
                     ),
                   ],
@@ -135,6 +52,49 @@ class SignUpPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
+    Key? key,
+    required this.ctrl,
+    required this.name,
+    required this.icon,
+  }) : super(key: key);
+
+  final TextEditingController ctrl;
+  final String name;
+  final IconData icon;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Icon(
+          icon,
+          color: Colors.white,
+          size: 20,
+        ),
+        14.widthBox,
+        Expanded(
+          child: TextField(
+            controller: ctrl,
+            obscureText: name == "Password" ? true : false,
+            style: subHeading2,
+            cursorColor: Colors.white,
+            keyboardType: name != "Age" ? TextInputType.text : TextInputType.number,
+            decoration: InputDecoration(
+              hintText: name,
+              hintStyle: subHeading2,
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

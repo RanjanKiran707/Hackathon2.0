@@ -4,11 +4,11 @@ import 'package:todo/fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class LoadingButton extends StatefulWidget {
-  const LoadingButton({Key? key, this.onPressed, this.text, this.fontSize = 18}) : super(key: key);
+  const LoadingButton({Key? key, this.onPressed, this.text, this.fontSize = 18, required this.color}) : super(key: key);
   final String? text;
   final Future<dynamic> Function()? onPressed;
   final double fontSize;
-
+  final Color color;
   @override
   State<LoadingButton> createState() => _LoadingButtonState();
 }
@@ -58,9 +58,9 @@ class _LoadingButtonState extends State<LoadingButton> {
       ),
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         primary: Colors.black,
-        backgroundColor: !loading ? secondary : secondary.withAlpha(255),
+        backgroundColor: !loading ? widget.color : widget.color.withAlpha(255),
       ),
       onPressed: !loading
           ? () {

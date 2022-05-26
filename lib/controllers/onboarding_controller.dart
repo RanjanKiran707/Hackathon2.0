@@ -24,7 +24,6 @@ class OnBoardingController extends GetxController {
     if (index.value == text.length - 1) {
       Get.to(
         const LoginPage(),
-        transition: Transition.zoom,
         duration: const Duration(milliseconds: 600),
       );
     }

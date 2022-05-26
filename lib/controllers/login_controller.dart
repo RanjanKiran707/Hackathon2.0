@@ -23,8 +23,9 @@ class LoginController extends GetxController {
           "password": passCtrl.text,
         },
       );
+      debugPrint(response.body);
       if (response.body != null) {
-        Get.off(HomePage());
+        Get.put(HomePage());
       } else {
         Get.snackbar("Error", response.exception.toString());
       }

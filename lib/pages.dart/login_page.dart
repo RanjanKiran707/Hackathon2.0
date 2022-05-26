@@ -1,6 +1,4 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,58 +35,9 @@ class LoginPage extends StatelessWidget {
             30.heightBox,
             Column(
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Icon(
-                      Icons.alternate_email,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    15.widthBox,
-                    Expanded(
-                      child: TextField(
-                        controller: loginctrl.emailCtrl,
-                        cursorColor: Colors.white,
-                        style: subHeading2,
-                        decoration: InputDecoration(
-                          hintText: "Email ID",
-                          hintStyle: subHeading2,
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomTextField(ctrl: loginctrl.emailCtrl, name: "Email", icon: Icons.email),
                 16.heightBox,
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    14.widthBox,
-                    Expanded(
-                      child: TextField(
-                        controller: loginctrl.passCtrl,
-                        obscureText: true,
-                        style: subHeading2,
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: subHeading2,
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomTextField(ctrl: loginctrl.passCtrl, name: "Password", icon: Icons.lock),
               ],
             ),
             20.heightBox,
@@ -110,6 +59,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: LoadingButton(
+                    color: secondary,
                     fontSize: 18,
                     onPressed: loginctrl.loginButtonPress,
                     text: "Login",
@@ -121,7 +71,7 @@ class LoginPage extends StatelessWidget {
             Row(
               children: [
                 const Expanded(
-                  child: Divider(color: primary, thickness: 0.5),
+                  child: Divider(color: Colors.white, thickness: 0.5),
                 ),
                 20.widthBox,
                 Text("OR", style: subHeading),
@@ -129,7 +79,7 @@ class LoginPage extends StatelessWidget {
                 const Expanded(
                   child: Divider(
                     thickness: 0.5,
-                    color: primary,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -139,31 +89,13 @@ class LoginPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.to(SignUpPage());
+                  child: LoadingButton(
+                    color: Colors.grey,
+                    fontSize: 18,
+                    onPressed: () async {
+                      Get.to(const SignUpPage());
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "SignUp",
-                            style: subHeading.copyWith(
-                              color: Colors.black45,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      primary: const Color(0xFFf0f4f6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                    text: "Sign Up",
                   ),
                 ),
               ],

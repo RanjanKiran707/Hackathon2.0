@@ -12,19 +12,20 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final MainController mainController = Get.put(MainController());
   MyApp({Key? key}) : super(key: key);
+  final MainController mainController = Get.put(MainController());
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      defaultTransition: Transition.cupertino,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.black,
         primaryColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      title: 'Flutter Demo',
+      title: 'PregTo',
       home: LoginPage(),
     );
   }

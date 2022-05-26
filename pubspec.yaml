@@ -45,7 +45,7 @@ dependencies:
   animations:
   intl:
   http:
-  logger:
+  cool_alert: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
