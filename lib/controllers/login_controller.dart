@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:todo/controllers/mainController.dart';
+import 'package:todo/domain/services/authenticate_service.dart';
 import 'package:todo/pages.dart/activity_page.dart';
+import 'package:todo/pages.dart/home_page.dart';
 
 class LoginController extends GetxController {
   final email = "".obs;
@@ -12,38 +14,20 @@ class LoginController extends GetxController {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
 
-  void loginButtonPress() {
+  Future loginButtonPress() async {
     if (_areFieldsValid()) {
-      _mainController.signIn(emailCtrl.text, passCtrl.text).then((value) {
-        if (value == "Signed In") {
-          emailCtrl.clear();
-          passCtrl.clear();
-          Get.offAll(
-            () => ActivityPage(),
-            transition: Transition.leftToRightWithFade,
-            duration: const Duration(milliseconds: 400),
-            opaque: false,
-            curve: Curves.easeOut,
-          );
-        } else {
-          Get.snackbar("Error", value);
-        }
-      });
-    }
-  }
-
-  Future googleLoginPress() async {
-    final result = await _mainController.googleLogin();
-    if (result) {
-      Get.offAll(
-        () => ActivityPage(),
-        transition: Transition.leftToRightWithFade,
-        duration: const Duration(milliseconds: 400),
-        opaque: false,
-        curve: Curves.easeOut,
+      final response = await _mainController.post(
+        api: ApiConstants.login,
+        body: {
+          "email": emailCtrl.text,
+          "password": passCtrl.text,
+        },
       );
-    } else {
-      Get.snackbar("Error", "Google Sign In Failed");
+      if (response.body != null) {
+        Get.off(HomePage());
+      } else {
+        Get.snackbar("Error", response.exception.toString());
+      }
     }
   }
 

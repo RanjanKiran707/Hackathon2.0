@@ -1,17 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:todo/controllers/mainController.dart';
 
 import 'package:todo/pages.dart/login_page.dart';
-import 'package:todo/pages.dart/activity_page.dart';
+import 'package:todo/pages.dart/onboarding_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
   runApp(MyApp());
 }
 
@@ -23,8 +19,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: Colors.black,
+        primarySwatch: Colors.blue,
+      ),
       title: 'Flutter Demo',
-      home: FirebaseAuth.instance.currentUser == null ? LoginPage() : ActivityPage(),
+      home: LoginPage(),
     );
   }
 }

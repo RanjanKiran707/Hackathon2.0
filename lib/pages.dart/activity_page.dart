@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo/colors.dart';
 import 'package:todo/controllers/activity_controller.dart';
 import 'package:todo/controllers/login_controller.dart';
@@ -31,12 +29,12 @@ class ActivityPage extends StatelessWidget {
                     Text(
                       "Welcome Back,",
                       style: bodyText.copyWith(
-                        color: lightGrey,
+                        color: primary,
                       ),
                     ),
                     5.heightBox,
                     Text(
-                      FirebaseAuth.instance.currentUser!.displayName ?? FirebaseAuth.instance.currentUser!.email!.split("@")[0],
+                      "",
                       style: subHeading,
                     )
                   ],
@@ -70,13 +68,13 @@ class ActivityPage extends StatelessWidget {
                         children: [
                           homeController.dayNames[index].dayName.text
                               .textStyle(bodyText)
-                              .color(homeController.selected.value == index ? Colors.white : lightGrey)
+                              .color(homeController.selected.value == index ? Colors.white : primary)
                               .make(),
                           homeController.dayNames[index].dayNum
                               .toString()
                               .text
                               .textStyle(bodyText)
-                              .color(homeController.selected.value == index ? Colors.white : lightGrey)
+                              .color(homeController.selected.value == index ? Colors.white : primary)
                               .make(),
                         ],
                       ),

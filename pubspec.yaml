@@ -37,16 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   hive:
   hive_flutter:
-  firebase_core:
-  firebase_auth:
-  cloud_firestore:
   get:
   mockito:
   velocity_x:
   google_fonts:
   flutter_svg:
-  google_sign_in:
+  animations:
   intl:
+  http:
+  logger:
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,6 +75,9 @@ flutter:
     - assets/images/register.jpg
     - assets/images/reset_pass.jpg
     - assets/images/google-color.svg
+    - assets/images/first_on.png
+    - assets/images/second_on.png
+    - assets/images/third_on.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

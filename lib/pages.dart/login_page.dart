@@ -7,17 +7,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/colors.dart';
 import 'package:todo/controllers/login_controller.dart';
 import 'package:todo/fonts.dart';
+import 'package:todo/pages.dart/signup_page.dart';
+import 'package:todo/utils/loadingButton.dart';
 
 import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({Key? key}) : super(key: key);
-
-  final LoginController homeController = Get.put(LoginController());
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final LoginController loginctrl = Get.put(LoginController());
     return Scaffold(
+      backgroundColor: primary,
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 30),
@@ -38,22 +40,22 @@ class LoginPage extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.alternate_email,
-                      color: lightGrey,
+                      color: Colors.white,
                       size: 20,
                     ),
                     15.widthBox,
                     Expanded(
                       child: TextField(
-                        controller: homeController.emailCtrl,
-                        cursorColor: lightGrey,
+                        controller: loginctrl.emailCtrl,
+                        cursorColor: Colors.white,
                         style: subHeading2,
                         decoration: InputDecoration(
                           hintText: "Email ID",
                           hintStyle: subHeading2,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: lightGrey),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
@@ -64,23 +66,23 @@ class LoginPage extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.lock_open_outlined,
-                      color: lightGrey,
+                      color: Colors.white,
                       size: 20,
                     ),
                     14.widthBox,
                     Expanded(
                       child: TextField(
-                        controller: homeController.passCtrl,
+                        controller: loginctrl.passCtrl,
                         obscureText: true,
                         style: subHeading2,
-                        cursorColor: lightGrey,
+                        cursorColor: Colors.white,
                         decoration: InputDecoration(
                           hintText: "Password",
                           hintStyle: subHeading2,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: lightGrey),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
@@ -97,7 +99,7 @@ class LoginPage extends StatelessWidget {
                 child: Text(
                   "Forgot Password?",
                   style: GoogleFonts.varelaRound(
-                    color: blueColor,
+                    color: secondary,
                   ),
                 ),
               ),
@@ -107,23 +109,10 @@ class LoginPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      homeController.loginButtonPress();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        "Login",
-                        style: subHeading,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: blueColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                  child: LoadingButton(
+                    fontSize: 18,
+                    onPressed: loginctrl.loginButtonPress,
+                    text: "Login",
                   ),
                 ),
               ],
@@ -131,16 +120,16 @@ class LoginPage extends StatelessWidget {
             20.heightBox,
             Row(
               children: [
-                Expanded(
-                  child: Divider(color: lightGrey, thickness: 0.5),
+                const Expanded(
+                  child: Divider(color: primary, thickness: 0.5),
                 ),
                 20.widthBox,
                 Text("OR", style: subHeading),
                 20.widthBox,
-                Expanded(
+                const Expanded(
                   child: Divider(
                     thickness: 0.5,
-                    color: lightGrey,
+                    color: primary,
                   ),
                 ),
               ],
@@ -152,25 +141,18 @@ class LoginPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      homeController.googleLoginPress();
+                      Get.to(SignUpPage());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            "assets/images/google-color.svg",
-                            height: 20,
-                          ),
                           Text(
-                            "Login with Google",
+                            "SignUp",
                             style: subHeading.copyWith(
                               color: Colors.black45,
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
                           ),
                         ],
                       ),
@@ -185,28 +167,6 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            Expanded(
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "New here?",
-                        style: GoogleFonts.varelaRound(color: lightGrey),
-                      ),
-                      TextSpan(
-                        text: " Register",
-                        style: GoogleFonts.varelaRound(color: blueColor),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            debugPrint("Clicked Register");
-                          },
-                      )
-                    ],
-                  ),
-                ),
-              ),
             ),
             const Spacer(
               flex: 1,

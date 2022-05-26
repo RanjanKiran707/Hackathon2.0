@@ -1,31 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo/domain/entities/calloutcome.dart';
 import 'package:todo/domain/services/authenticate_service.dart';
 
 class MainController extends GetxController {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   late AuthenticateService _authenticateService;
-  final signedIn = true.obs;
 
   @override
   void onInit() {
-    _authenticateService = AuthenticateService(_firebaseAuth);
+    _authenticateService = AuthenticateService();
     super.onInit();
   }
 
-  Future<String> signIn(String email, String password) {
-    return _authenticateService.signIn(
-      email: email,
-      password: password,
-    );
-  }
-
-  Future<String> signUp(String email, String password) {
-    return _authenticateService.signUp(email: email, password: password);
-  }
-
-  Future<bool> googleLogin() {
-    return _authenticateService.googleLogin();
+  Future<CallOutcome> post({required String api, required Map<String, dynamic> body}) async {
+    try {
+      final res = await _authenticateService.postRequest(api: api, body: body);
+      debugPrint(res.body);
+      if (res.statusCode == 200) {
+        return CallOutcome(body: res.body, statusCode: res.statusCode);
+      } else {
+        return CallOutcome(exception: res.body, statusCode: res.statusCode);
+      }
+    } on Exception catch (e) {
+      return CallOutcome(exception: e.toString(), statusCode: 500);
+    }
   }
 }

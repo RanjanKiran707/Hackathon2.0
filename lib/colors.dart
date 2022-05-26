@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-final Color lightGrey = Colors.black.withOpacity(0.3);
+const Color primary = Colors.black;
 
-const Color blueColor = Color(0xFF0065ff);
+const Color secondary = Color(0xFF0065ff);
 
 const Color lightBlue = Color(0xFF276ef0);

@@ -1,41 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AuthenticateService {
-  final FirebaseAuth _firebaseAuth;
+  AuthenticateService();
 
-  AuthenticateService(this._firebaseAuth);
-
-  Future<String> signIn({required String email, required String password}) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed In";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
-    }
-  }
-
-  Future<String> signUp({required String email, required String password}) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Sucessfully Registerd";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
-    }
-  }
-
-  Future<bool> googleLogin() async {
-    final user = await GoogleSignIn().signIn();
-    if (user == null) return false;
-
-    final googleAuth = await user.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth.idToken,
-      accessToken: googleAuth.accessToken,
+  Future<http.Response> postRequest({required String api, required Map<String, dynamic> body}) async {
+    debugPrint(Uri.parse(ApiConstants.baseUrl + api).toString());
+    final http.Response res = await http.post(
+      Uri.parse(ApiConstants.baseUrl + api),
+      body: jsonEncode(body),
+      headers: {
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
     );
-
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    return true;
+    debugPrint(res.statusCode.toString());
+    return res;
   }
+}
+
+class ApiConstants {
+  static String baseUrl = "https://hackbites.herokuapp.com/";
+  static String register = "auth/register";
+  static String login = "auth/login";
+  static String details = "details";
 }
