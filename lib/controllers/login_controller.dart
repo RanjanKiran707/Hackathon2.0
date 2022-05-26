@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:todo/controllers/mainController.dart';
@@ -14,7 +15,7 @@ class LoginController extends GetxController {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
 
-  Future loginButtonPress() async {
+  Future loginButtonPress(BuildContext context) async {
     if (_areFieldsValid()) {
       final response = await _mainController.post(
         api: ApiConstants.login,
@@ -27,7 +28,12 @@ class LoginController extends GetxController {
       if (response.body != null) {
         Get.put(HomePage());
       } else {
-        Get.snackbar("Error", response.exception.toString());
+        await CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          title: "Error",
+          text: response.exception,
+        );
       }
     }
   }

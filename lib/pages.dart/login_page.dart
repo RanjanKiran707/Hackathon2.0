@@ -61,7 +61,7 @@ class LoginPage extends StatelessWidget {
                   child: LoadingButton(
                     color: secondary,
                     fontSize: 18,
-                    onPressed: loginctrl.loginButtonPress,
+                    onPressed: () => loginctrl.loginButtonPress(context),
                     text: "Login",
                   ),
                 ),

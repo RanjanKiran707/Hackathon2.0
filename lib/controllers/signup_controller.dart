@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/controllers/mainController.dart';
@@ -10,7 +11,7 @@ class SignUpController extends GetxController {
   final nameCtrl = TextEditingController();
   final MainController _mainController = Get.find<MainController>();
 
-  Future signUp() async {
+  Future signUp(BuildContext context) async {
     if (_areFieldsValid()) {
       final response = await _mainController.post(
         api: ApiConstants.register,
@@ -22,9 +23,20 @@ class SignUpController extends GetxController {
         },
       );
       if (response.body != null) {
-        Get.snackbar("Info", response.body.toString());
+        await CoolAlert.show(
+          context: context,
+          type: CoolAlertType.success,
+          title: "Success",
+          text: response.body,
+        );
+        Get.back();
       } else {
-        Get.snackbar("Error", response.exception.toString());
+        await CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          title: "Error",
+          text: response.exception,
+        );
       }
     }
   }

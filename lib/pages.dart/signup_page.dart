@@ -41,7 +41,7 @@ class SignUpPage extends StatelessWidget {
                       child: LoadingButton(
                         color: secondary,
                         fontSize: 16,
-                        onPressed: ctrl.signUp,
+                        onPressed: () => ctrl.signUp(context),
                         text: "Sign Up",
                       ),
                     ),
