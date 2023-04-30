@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo/controllers/mainController.dart';
 import 'package:todo/domain/services/authenticate_service.dart';
 import 'package:todo/pages.dart/activity_page.dart';
-import 'package:todo/pages.dart/home_page.dart';
+import 'package:todo/pages.dart/nav_page.dart';
 
 class LoginController extends GetxController {
   final email = "".obs;
@@ -26,7 +26,7 @@ class LoginController extends GetxController {
       );
       debugPrint(response.body);
       if (response.body != null) {
-        Get.put(HomePage());
+        Get.put(NavPage());
       } else {
         await CoolAlert.show(
           context: context,
@@ -44,7 +44,8 @@ class LoginController extends GetxController {
       return false;
     }
     if (!GetUtils.isLengthGreaterOrEqual(passCtrl.text, 4)) {
-      Get.snackbar("Password Error", "Password Length should be greater than 4");
+      Get.snackbar(
+          "Password Error", "Password Length should be greater than 4");
       return false;
     }
     return true;

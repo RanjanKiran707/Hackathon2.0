@@ -46,6 +46,9 @@ dependencies:
   intl:
   http:
   cool_alert: ^1.1.0
+  riverpod:
+  flutter_riverpod:
+  dartz:
 dev_dependencies:
   flutter_test:
     sdk: flutter

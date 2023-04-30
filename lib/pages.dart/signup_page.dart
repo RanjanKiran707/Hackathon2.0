@@ -1,56 +1,165 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:todo/colors.dart';
 import 'package:todo/controllers/signup_controller.dart';
+import 'package:todo/domain/services/authenticate_service.dart';
 import 'package:todo/fonts.dart';
+import 'package:todo/pages.dart/login_page.dart';
+import 'package:todo/repository_providers.dart/post_repo.dart';
 import 'package:todo/utils/loadingButton.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+import '../utils/navigator.dart';
+
+final signUpIndex = StateProvider<int>((ref) => 0);
+
+class SignUpPage extends ConsumerWidget {
+  SignUpPage({Key? key}) : super(key: key);
+
+  Future<void> signUp(WidgetRef ref, BuildContext context) async {
+    final res = await ref.read(apiServiceProvider).post(
+      api: ApiConstants.register,
+      body: {
+        "name": nameCtrl.text,
+        "email": emailCtrl.text,
+        "password": passCtrl.text,
+        "age": ageCtrl.text,
+      },
+    );
+
+    if (res.body != null) {
+      ref.read(signUpIndex.notifier).state = 1;
+    } else {
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: "Error",
+        text: "Something went wrong",
+      );
+    }
+  }
+
+  Future<void> addDetails(WidgetRef ref, BuildContext context) async {
+    final res = await ref.read(apiServiceProvider).post(
+      api: ApiConstants.details,
+      body: {
+        "height": heightCtrl.text,
+        "weight": weightCtrl.text,
+        "pregnantDays": daysCtrl.text,
+        "number": ageCtrl.text,
+      },
+    );
+
+    if (res.body != null) {
+      Nav.push(context, LoginPage());
+    } else {
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: "Error",
+        text: "Something went wrong",
+      );
+    }
+  }
+
+  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController passCtrl = TextEditingController();
+  final TextEditingController nameCtrl = TextEditingController();
+  final TextEditingController ageCtrl = TextEditingController();
+
+  final heightCtrl = TextEditingController();
+  final weightCtrl = TextEditingController();
+  final daysCtrl = TextEditingController();
+  final doctorCtrl = TextEditingController();
+  final partnerCtrl = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final ctrl = Get.put(SignUpController());
+  Widget build(BuildContext context, ref) {
+    final index = ref.watch(signUpIndex);
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "SignUp",
-              style: bigheading,
-            ),
-            30.heightBox,
-            Column(
+      body: IndexedStack(
+        index: index,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTextField(ctrl: ctrl.emailCtrl, name: "Email", icon: Icons.email),
-                16.heightBox,
-                CustomTextField(ctrl: ctrl.passCtrl, name: "Password", icon: Icons.lock),
-                16.heightBox,
-                CustomTextField(ctrl: ctrl.nameCtrl, name: "Name", icon: Icons.person),
-                16.heightBox,
-                CustomTextField(ctrl: ctrl.ageCtrl, name: "Age", icon: Icons.numbers),
-                20.heightBox,
-                Row(
-                  mainAxisSize: MainAxisSize.max,
+                Text(
+                  "Sign Up",
+                  style: bigheading,
+                ),
+                30.heightBox,
+                Column(
                   children: [
-                    Expanded(
-                      child: LoadingButton(
-                        color: secondary,
-                        fontSize: 16,
-                        onPressed: () => ctrl.signUp(context),
-                        text: "Sign Up",
-                      ),
+                    CustomTextField(
+                        ctrl: emailCtrl, name: "Email", icon: Icons.email),
+                    16.heightBox,
+                    CustomTextField(
+                        ctrl: passCtrl, name: "Password", icon: Icons.lock),
+                    16.heightBox,
+                    CustomTextField(
+                        ctrl: nameCtrl, name: "Name", icon: Icons.person),
+                    16.heightBox,
+                    CustomTextField(
+                        ctrl: ageCtrl, name: "Age", icon: Icons.numbers),
+                    20.heightBox,
+                    LoadingButton(
+                      color: secondary,
+                      fontSize: 16,
+                      onPressed: () => signUp(ref, context),
+                      text: "Sign Up",
                     ),
                   ],
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Add Details",
+                  style: bigheading,
+                ),
+                30.heightBox,
+                Column(
+                  children: [
+                    CustomTextField(
+                        ctrl: heightCtrl, name: "Height", icon: Icons.email),
+                    16.heightBox,
+                    CustomTextField(
+                        ctrl: weightCtrl, name: "Weight", icon: Icons.lock),
+                    16.heightBox,
+                    CustomTextField(
+                        ctrl: daysCtrl,
+                        name: "Days Since Pregnant",
+                        icon: Icons.person),
+                    16.heightBox,
+                    CustomTextField(
+                        ctrl: partnerCtrl,
+                        name: "Partner Number",
+                        icon: Icons.numbers),
+                    20.heightBox,
+                    LoadingButton(
+                      color: secondary,
+                      fontSize: 16,
+                      onPressed: () => addDetails(ref, context),
+                      text: "Add Details",
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -74,7 +183,7 @@ class CustomTextField extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: Colors.white,
+          color: Colors.grey,
           size: 20,
         ),
         14.widthBox,
@@ -84,7 +193,8 @@ class CustomTextField extends StatelessWidget {
             obscureText: name == "Password" ? true : false,
             style: subHeading2,
             cursorColor: Colors.white,
-            keyboardType: name != "Age" ? TextInputType.text : TextInputType.number,
+            keyboardType:
+                name != "Age" ? TextInputType.text : TextInputType.number,
             decoration: InputDecoration(
               hintText: name,
               hintStyle: subHeading2,

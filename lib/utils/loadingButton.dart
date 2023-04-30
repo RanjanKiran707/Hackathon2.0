@@ -4,7 +4,13 @@ import 'package:todo/fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class LoadingButton extends StatefulWidget {
-  const LoadingButton({Key? key, this.onPressed, this.text, this.fontSize = 18, required this.color}) : super(key: key);
+  const LoadingButton(
+      {Key? key,
+      this.onPressed,
+      this.text,
+      this.fontSize = 18,
+      required this.color})
+      : super(key: key);
   final String? text;
   final Future<dynamic> Function()? onPressed;
   final double fontSize;
@@ -26,7 +32,8 @@ class _LoadingButtonState extends State<LoadingButton> {
             ? FittedBox(
                 child: Text(
                   widget.text!,
-                  style: bodyText.copyWith(fontSize: widget.fontSize, color: Colors.white),
+                  style: bodyText.copyWith(
+                      fontSize: widget.fontSize, color: Colors.white),
                 ),
               )
             : Stack(
@@ -49,7 +56,8 @@ class _LoadingButtonState extends State<LoadingButton> {
                     ),
                   ),
                   const SizedBox(
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
+                    child: CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 3),
                     height: 15,
                     width: 15,
                   ),
@@ -58,7 +66,8 @@ class _LoadingButtonState extends State<LoadingButton> {
       ),
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        minimumSize: Size(double.infinity, 0),
         primary: Colors.black,
         backgroundColor: !loading ? widget.color : widget.color.withAlpha(255),
       ),

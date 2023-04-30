@@ -23,7 +23,7 @@ class OnBoardingController extends GetxController {
     }
     if (index.value == text.length - 1) {
       Get.to(
-        const LoginPage(),
+        LoginPage(),
         duration: const Duration(milliseconds: 600),
       );
     }
