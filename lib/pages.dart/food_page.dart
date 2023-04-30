@@ -41,6 +41,14 @@ class FoodPage extends ConsumerWidget {
     return foodData.when(
       data: (data) {
         return Scaffold(
+          appBar: AppBar(
+            title: "Food Page"
+                .text
+                .textStyle(bigheading.copyWith(color: Colors.white))
+                .make(),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+          ),
           body: DefaultTabController(
             length: 2,
             child: SafeArea(

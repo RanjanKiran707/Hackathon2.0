@@ -1,6 +1,6 @@
 class ApiConstants {
-  // static String baseUrl = "https://virtualmidwife1.onrender.com/";
-  static String baseUrl = "http://localhost:4000/";
+  static String baseUrl = "https://virtualmidwife1.onrender.com/";
+  // static String baseUrl = "http://localhost:4000/";
   static String register = "auth/register";
   static String login = "auth/login";
   static String details = "details";
@@ -10,4 +10,5 @@ class ApiConstants {
   static String addQ = "forum/addquestion";
   static String addAns = "forum/addanswer";
   static String getAllQ = "forum/getallquestion";
+  static String getEx = "exercises/view";
 }

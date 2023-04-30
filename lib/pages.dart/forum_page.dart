@@ -138,12 +138,15 @@ class ForumPage extends ConsumerWidget {
                               )
                               .toList(),
                           15.heightBox,
-                          TextField(
-                            controller: ctrl,
-                            decoration: InputDecoration(
-                              hintText: "Enter your answer",
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: TextField(
+                              controller: ctrl,
+                              decoration: InputDecoration(
+                                hintText: "Enter your answer",
+                              ),
+                              onSubmitted: (value) async {},
                             ),
-                            onSubmitted: (value) async {},
                           ),
                           10.heightBox,
                           Padding(

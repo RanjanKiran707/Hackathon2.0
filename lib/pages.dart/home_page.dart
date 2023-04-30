@@ -13,7 +13,7 @@ import 'package:todo/pages.dart/login_page.dart';
 import 'package:todo/repository_providers.dart/post_repo.dart';
 import 'package:todo/utils/loadingButton.dart';
 
-final homeStateProvider = StateProvider((ref) => const AsyncValue.loading());
+final homeDataProvider = StateProvider((ref) => const AsyncValue.loading());
 
 final appointmentStateProvider =
     StateProvider((ref) => CrossFadeState.showFirst);
@@ -35,7 +35,7 @@ class HomePage extends ConsumerWidget {
       debugPrint("Response = " + res.body.toString());
       ref.read(selectedWeekProvider.notifier).state =
           (jsonDecode(res.body!)["daysSincePregnant"] / 7).toInt();
-      ref.read(homeStateProvider.notifier).state =
+      ref.read(homeDataProvider.notifier).state =
           AsyncValue.data(jsonDecode(res.body!));
     } else {
       CoolAlert.show(
@@ -44,14 +44,14 @@ class HomePage extends ConsumerWidget {
         title: "Error",
         text: "Something went wrong",
       );
-      ref.read(homeStateProvider.notifier).state =
+      ref.read(homeDataProvider.notifier).state =
           AsyncValue.error("Error", StackTrace.current);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeStateProvider);
+    final homeState = ref.watch(homeDataProvider);
 
     return homeState.when<Widget>(
       data: (data) {
@@ -66,7 +66,7 @@ class HomePage extends ConsumerWidget {
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
                 onPressed: () {
-                  ref.read(homeStateProvider.notifier).state = AsyncLoading();
+                  ref.read(homeDataProvider.notifier).state = AsyncLoading();
                 },
                 icon: const Icon(Icons.sos),
               )
