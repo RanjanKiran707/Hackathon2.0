@@ -154,9 +154,8 @@ class FoodListWidget extends ConsumerWidget {
                 children: [
                   Image.network(
                     e["url"],
-                    width: context.screenWidth,
-                    height: 200,
-                    fit: BoxFit.fill,
+                    width: 100,
+                    height: 100,
                   ),
                   10.heightBox,
                   e["meal"].toString().text.textStyle(subHeading).make(),

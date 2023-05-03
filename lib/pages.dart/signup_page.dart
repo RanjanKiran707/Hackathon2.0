@@ -42,15 +42,16 @@ class SignUpPage extends ConsumerWidget {
   }
 
   Future<void> addDetails(WidgetRef ref, BuildContext context) async {
-    final res = await ref.read(apiServiceProvider).post(
-      api: ApiConstants.details,
-      body: {
-        "height": heightCtrl.text,
-        "weight": weightCtrl.text,
-        "pregnantDays": daysCtrl.text,
-        "number": ageCtrl.text,
-      },
-    );
+    final res = await ref
+        .read(apiServiceProvider)
+        .post(api: ApiConstants.details, body: {
+      "height": heightCtrl.text,
+      "weight": weightCtrl.text,
+      "pregnantDays": daysCtrl.text,
+      "number": ageCtrl.text,
+    }, queryParams: {
+      "email": emailCtrl.text,
+    });
 
     if (res.body != null) {
       Nav.push(context, LoginPage());
@@ -133,20 +134,24 @@ class SignUpPage extends ConsumerWidget {
                 Column(
                   children: [
                     CustomTextField(
-                        ctrl: heightCtrl, name: "Height", icon: Icons.email),
+                        ctrl: heightCtrl,
+                        name: "Height",
+                        icon: Icons.boy_outlined),
                     16.heightBox,
                     CustomTextField(
-                        ctrl: weightCtrl, name: "Weight", icon: Icons.lock),
+                        ctrl: weightCtrl,
+                        name: "Weight",
+                        icon: Icons.monitor_weight),
                     16.heightBox,
                     CustomTextField(
                         ctrl: daysCtrl,
                         name: "Days Since Pregnant",
-                        icon: Icons.person),
+                        icon: Icons.pregnant_woman),
                     16.heightBox,
                     CustomTextField(
                         ctrl: partnerCtrl,
                         name: "Partner Number",
-                        icon: Icons.numbers),
+                        icon: Icons.phone),
                     20.heightBox,
                     LoadingButton(
                       color: secondary,

@@ -59,7 +59,9 @@ class WorkoutPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        YoutubeWidget(url: e["link"]),
+                        YoutubeWidget(
+                          url: e["link"],
+                        ),
                         10.heightBox,
                         e["title"].toString().text.textStyle(subHeading).make(),
                         10.heightBox,
@@ -115,7 +117,10 @@ class _YoutubeWidgetState extends State<YoutubeWidget> {
       builder: (context, player) {
         return Column(
           children: [
-            player,
+            SizedBox(
+              height: context.screenHeight * 0.4,
+              child: player,
+            ),
             Text('Youtube Player'),
           ],
         );
