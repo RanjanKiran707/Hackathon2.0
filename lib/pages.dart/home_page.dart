@@ -15,6 +15,8 @@ import 'package:todo/utils/loadingButton.dart';
 
 final homeDataProvider = StateProvider((ref) => const AsyncValue.loading());
 
+final mealPlanProvider = StateProvider((ref) => const AsyncValue.loading());
+
 final appointmentStateProvider =
     StateProvider((ref) => CrossFadeState.showFirst);
 final selectedWeekProvider = StateProvider((ref) => 0);
@@ -23,6 +25,29 @@ class HomePage extends ConsumerWidget {
   HomePage({Key? key}) : super(key: key);
   final doctor = TextEditingController();
   final dateCtrl = TextEditingController();
+
+  Future<void> _getMealData(WidgetRef ref, BuildContext context) async {
+    final res = await ref.read(apiServiceProvider).get(
+      api: ApiConstants.getMealPlan,
+      queryParams: {
+        "email": ref.read(loginDetailsProvider)["email"],
+      },
+    );
+    if (res.body != null) {
+      debugPrint("Response = " + res.body.toString());
+      ref.read(mealPlanProvider.notifier).state =
+          AsyncValue.data(jsonDecode(res.body!));
+    } else {
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: "Error",
+        text: "Something went wrong",
+      );
+      ref.read(mealPlanProvider.notifier).state =
+          AsyncValue.error("Error", StackTrace.current);
+    }
+  }
 
   Future<void> _getData(WidgetRef ref, BuildContext context) async {
     final res = await ref.read(apiServiceProvider).get(
@@ -68,6 +93,16 @@ class HomePage extends ConsumerWidget {
                 onPressed: () {
                   ref.read(homeDataProvider.notifier).state = AsyncLoading();
                 },
+                icon: const Icon(Icons.refresh),
+              ),
+              IconButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                ),
+                onPressed: () {
+                  ref.read(homeDataProvider.notifier).state = AsyncLoading();
+                  ref.read(mealPlanProvider.notifier).state = AsyncLoading();
+                },
                 icon: const Icon(Icons.sos),
               )
             ],
@@ -111,6 +146,36 @@ class HomePage extends ConsumerWidget {
                     );
                     return ExaminationWidget(map: map, selIndex: selIndex);
                   }),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final mealPlan = ref.watch(mealPlanProvider);
+
+                      return mealPlan.when(
+                        data: (data) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              20.heightBox,
+                              "Meal Plan".text.textStyle(subHeading).make(),
+                              10.heightBox,
+                              data["plan"]
+                                  .toString()
+                                  .text
+                                  .textStyle(bodyText)
+                                  .make(),
+                            ],
+                          );
+                        },
+                        loading: () {
+                          _getMealData(ref, context);
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        error: (err, _) => err.toString().text.make(),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
